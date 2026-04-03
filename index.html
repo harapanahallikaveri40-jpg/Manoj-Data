@@ -3,9 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="google-site-verification" content="YOUR_CODE_HERE" />
 <title>Manoj — File Dashboard</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap');
   :root {
@@ -17,9 +15,7 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'DM Mono', monospace; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
 
-  /* ═══════════════════════════════
-     LOGIN SCREEN
-  ═══════════════════════════════ */
+  /* LOGIN */
   #loginScreen {
     position: fixed; inset: 0; z-index: 9999;
     display: flex; flex-direction: column; justify-content: center; align-items: center;
@@ -66,22 +62,15 @@
   }
   .login-btn:hover { transform: scale(1.03); box-shadow: 0 8px 28px rgba(99,179,237,0.3); }
 
-  .login-err {
-    margin-top: 12px; font-size: 12px; color: var(--danger);
-    text-align: center; opacity: 0; transition: opacity 0.3s; letter-spacing: 1px;
-  }
+  .login-err { margin-top: 12px; font-size: 12px; color: var(--danger); text-align: center; opacity: 0; transition: opacity 0.3s; letter-spacing: 1px; }
   .login-err.show { opacity: 1; }
-
   .shake { animation: shake 0.4s ease; }
   @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
 
-  /* ═══════════════════════════════
-     WELCOME SCREEN
-  ═══════════════════════════════ */
+  /* WELCOME */
   #welcomeScreen {
     position: fixed; inset: 0; z-index: 9000; display: none;
-    flex-direction: column; justify-content: center; align-items: center;
-    cursor: pointer;
+    flex-direction: column; justify-content: center; align-items: center; cursor: pointer;
     background: linear-gradient(345deg, #1a0533 0%, #0d0a3e 40%, #0a1628 70%, #1a0a0a 100%);
     transition: opacity 0.5s ease;
   }
@@ -91,33 +80,20 @@
       linear-gradient(90deg, rgba(99,179,237,0.04) 1px, transparent 1px);
     background-size: 60px 60px; animation: gridMove 20s linear infinite;
   }
-
   .welcome-words { display: flex; gap: 32px; position: relative; z-index: 1; }
   .welcome-words span {
     font-family: 'Syne', sans-serif; font-weight: 800;
-    font-size: clamp(52px, 10vw, 110px); letter-spacing: -2px;
-    display: inline-block;
-    transition: transform 0.9s cubic-bezier(.77,0,.18,1), opacity 0.9s ease;
-    will-change: transform;
+    font-size: clamp(52px, 10vw, 110px); letter-spacing: -2px; display: inline-block;
+    transition: transform 0.9s cubic-bezier(.77,0,.18,1), opacity 0.9s ease; will-change: transform;
   }
   #wLeft  { color: #fff; text-shadow: 0 0 80px rgba(99,179,237,0.4); }
-  #wRight {
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-  }
+  #wRight { background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
   .split-left  { transform: translateX(-110vw) !important; opacity: 0 !important; }
   .split-right { transform: translateX(110vw)  !important; opacity: 0 !important; }
-
-  .click-hint {
-    position: relative; z-index: 1; margin-top: 40px;
-    font-size: 12px; letter-spacing: 4px; text-transform: uppercase;
-    color: rgba(255,255,255,0.3); animation: breathe 2.5s ease-in-out infinite;
-  }
+  .click-hint { position: relative; z-index: 1; margin-top: 40px; font-size: 12px; letter-spacing: 4px; text-transform: uppercase; color: rgba(255,255,255,0.3); animation: breathe 2.5s ease-in-out infinite; }
   @keyframes breathe { 0%,100% { opacity: 0.3; } 50% { opacity: 0.8; } }
 
-  /* ═══════════════════════════════
-     DASHBOARD
-  ═══════════════════════════════ */
+  /* DASHBOARD */
   #dashboard { display: none; min-height: 100vh; flex-direction: column; }
   #dashboard.show { display: flex; }
 
@@ -164,6 +140,8 @@
   @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
   .drop-title { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 600; margin-bottom: 6px; }
   .drop-sub { font-size: 12px; color: var(--muted); }
+  .type-hints { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 14px; }
+  .type-pill { font-size: 10px; padding: 3px 10px; border-radius: 50px; background: rgba(99,179,237,0.08); border: 1px solid rgba(99,179,237,0.2); color: var(--muted); letter-spacing: 1px; }
   .upload-btn {
     display: inline-block; margin-top: 18px; padding: 11px 28px;
     background: linear-gradient(135deg, var(--accent), var(--accent2));
@@ -172,13 +150,6 @@
     transition: transform 0.2s, box-shadow 0.2s; letter-spacing: 1px;
   }
   .upload-btn:hover { transform: scale(1.04); box-shadow: 0 8px 28px rgba(99,179,237,0.3); }
-
-  /* PROGRESS */
-  #progressWrap { display: none; margin-top: 16px; }
-  #progressWrap.show { display: block; }
-  .prog-label { font-size: 11px; color: var(--muted); margin-bottom: 8px; display: flex; justify-content: space-between; }
-  .prog-bar-bg { height: 4px; background: rgba(99,179,237,0.12); border-radius: 4px; overflow: hidden; }
-  #progBar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 4px; transition: width 0.3s ease; }
 
   /* FILE TABLE */
   .files-section { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 28px; flex: 1; }
@@ -221,12 +192,17 @@
   .file-name-cell { display: flex; align-items: center; gap: 10px; font-weight: 500; }
   .file-icon-badge { font-size: 20px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: rgba(99,179,237,0.08); border-radius: 8px; flex-shrink: 0; }
   .fname { color: var(--text); word-break: break-all; }
-  .fpath { font-size: 10px; color: var(--muted); margin-top: 2px; }
+  .fsize-inline { font-size: 10px; color: var(--muted); margin-top: 2px; }
   .badge { display: inline-block; padding: 3px 10px; border-radius: 50px; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; background: rgba(99,179,237,0.1); color: var(--accent); border: 1px solid rgba(99,179,237,0.2); }
+  .badge.zip { background: rgba(159,122,234,0.1); color: var(--accent2); border-color: rgba(159,122,234,0.2); }
+  .badge.img { background: rgba(104,211,145,0.1); color: var(--accent3); border-color: rgba(104,211,145,0.2); }
+  .badge.pdf { background: rgba(252,129,129,0.1); color: var(--danger); border-color: rgba(252,129,129,0.2); }
   .size-cell { color: var(--muted); font-size: 12px; }
   .action-btns { display: flex; gap: 8px; }
   .dl-btn { background: rgba(104,211,145,0.1); border: 1px solid rgba(104,211,145,0.25); color: var(--accent3); border-radius: 6px; padding: 6px 12px; font-size: 11px; cursor: pointer; font-family: 'DM Mono', monospace; transition: background 0.2s, transform 0.15s; display: flex; align-items: center; gap: 5px; }
   .dl-btn:hover { background: rgba(104,211,145,0.2); transform: scale(1.05); }
+  .prev-btn { background: rgba(99,179,237,0.1); border: 1px solid rgba(99,179,237,0.25); color: var(--accent); border-radius: 6px; padding: 6px 12px; font-size: 11px; cursor: pointer; font-family: 'DM Mono', monospace; transition: background 0.2s, transform 0.15s; display: flex; align-items: center; gap: 5px; }
+  .prev-btn:hover { background: rgba(99,179,237,0.2); transform: scale(1.05); }
   .del-btn { background: rgba(252,129,129,0.08); border: 1px solid rgba(252,129,129,0.2); color: var(--danger); border-radius: 6px; padding: 6px 10px; font-size: 11px; cursor: pointer; font-family: 'DM Mono', monospace; transition: background 0.2s, transform 0.15s; }
   .del-btn:hover { background: rgba(252,129,129,0.18); transform: scale(1.05); }
 
@@ -241,6 +217,7 @@
   .modal-body { padding: 24px; overflow: auto; flex: 1; display: flex; justify-content: center; align-items: flex-start; }
   #previewImg { max-width: 100%; max-height: 60vh; border-radius: 10px; display: none; }
   #previewText { white-space: pre-wrap; word-break: break-all; font-size: 12px; color: var(--accent3); background: rgba(0,0,0,0.3); padding: 16px; border-radius: 10px; width: 100%; max-height: 60vh; overflow: auto; display: none; line-height: 1.7; }
+  #previewPdf { width: 100%; height: 60vh; border: none; border-radius: 10px; display: none; }
   #previewFallback { text-align: center; color: var(--muted); padding: 40px; display: none; }
   #previewFallback .f-icon { font-size: 56px; margin-bottom: 16px; }
 
@@ -256,7 +233,7 @@
 </head>
 <body>
 
-<!-- ══ LOGIN SCREEN ══ -->
+<!-- LOGIN -->
 <div id="loginScreen">
   <div class="login-box">
     <div class="login-logo">M<span>.</span>Dashboard</div>
@@ -268,7 +245,7 @@
   </div>
 </div>
 
-<!-- ══ WELCOME SCREEN ══ -->
+<!-- WELCOME -->
 <div id="welcomeScreen">
   <div class="welcome-words">
     <span id="wLeft">Welcome</span>
@@ -277,26 +254,25 @@
   <div class="click-hint">Click anywhere to enter</div>
 </div>
 
-<!-- ══ DASHBOARD ══ -->
+<!-- DASHBOARD -->
 <div id="dashboard">
   <header class="dash-header">
     <div class="logo">M<span>.</span>Dashboard</div>
-    <div class="header-meta" id="headerTime">File Manager v1.0</div>
+    <div class="header-meta" id="headerTime">File Manager v2.0</div>
   </header>
 
   <main class="dash-main">
 
-    <!-- Stats -->
     <div class="stats-row">
       <div class="stat-card">
         <div class="stat-label">Total Files</div>
         <div class="stat-value" id="statFiles">0</div>
-        <div class="stat-sub">from uploads</div>
+        <div class="stat-sub">uploaded</div>
       </div>
       <div class="stat-card">
         <div class="stat-label">Total Size</div>
         <div class="stat-value" id="statSize">0 B</div>
-        <div class="stat-sub">uncompressed</div>
+        <div class="stat-sub">combined</div>
       </div>
       <div class="stat-card">
         <div class="stat-label">File Types</div>
@@ -304,28 +280,31 @@
         <div class="stat-sub">unique extensions</div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">ZIPs Loaded</div>
-        <div class="stat-value" id="statZips">0</div>
-        <div class="stat-sub">archives</div>
+        <div class="stat-label">Last Upload</div>
+        <div class="stat-value" id="statLast" style="font-size:16px; padding-top:6px;">—</div>
+        <div class="stat-sub">filename</div>
       </div>
     </div>
 
     <!-- Upload Zone -->
     <div class="upload-section">
-      <div class="section-title">Upload ZIP Archive</div>
+      <div class="section-title">Upload Files</div>
       <div id="dropZone">
-        <input type="file" id="zipInput" accept=".zip">
-        <span class="drop-icon">🗜️</span>
-        <div class="drop-title">Drop your ZIP file here</div>
-        <div class="drop-sub">Supports .zip archives — all files inside will be listed</div>
-        <button class="upload-btn" onclick="document.getElementById('zipInput').click()">Choose ZIP File</button>
-      </div>
-      <div id="progressWrap">
-        <div class="prog-label">
-          <span id="progLabel">Extracting…</span>
-          <span id="progPct">0%</span>
+        <input type="file" id="fileInput" multiple accept="*/*">
+        <span class="drop-icon">📁</span>
+        <div class="drop-title">Drop any files here</div>
+        <div class="drop-sub">All file types supported — each file downloads in its original format</div>
+        <div class="type-hints">
+          <span class="type-pill">PDF</span>
+          <span class="type-pill">Images</span>
+          <span class="type-pill">ZIP</span>
+          <span class="type-pill">Video</span>
+          <span class="type-pill">Audio</span>
+          <span class="type-pill">Docs</span>
+          <span class="type-pill">Code</span>
+          <span class="type-pill">Any</span>
         </div>
-        <div class="prog-bar-bg"><div id="progBar"></div></div>
+        <button class="upload-btn" onclick="document.getElementById('fileInput').click()">Choose Files</button>
       </div>
     </div>
 
@@ -341,13 +320,13 @@
       </div>
       <div id="emptyState">
         <div class="e-icon">📂</div>
-        <p>Upload a ZIP file to see its contents here</p>
+        <p>Upload files to see them listed here</p>
       </div>
       <table id="fileTable">
         <thead>
           <tr>
             <th onclick="sortBy('name')">File ↕</th>
-            <th onclick="sortBy('type')">Type ↕</th>
+            <th onclick="sortBy('ext')">Type ↕</th>
             <th onclick="sortBy('size')">Size ↕</th>
             <th>Actions</th>
           </tr>
@@ -369,213 +348,144 @@
     <div class="modal-body">
       <img id="previewImg" alt="preview">
       <pre id="previewText"></pre>
+      <iframe id="previewPdf"></iframe>
       <div id="previewFallback">
         <div class="f-icon">📄</div>
-        <p>Preview not available for this file type</p>
+        <p>Preview not available for this file type.<br>Click Download to save it.</p>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Toast -->
 <div id="toast"></div>
 
 <script>
-  /* ══════════════════════
-     LOGIN
-  ══════════════════════ */
   const CORRECT_PASSWORD = 'master';
 
-  document.getElementById('pwInput').addEventListener('keydown', e => {
-    if (e.key === 'Enter') doLogin();
-  });
+  document.getElementById('pwInput').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
 
   function doLogin() {
     const val = document.getElementById('pwInput').value;
     if (val === CORRECT_PASSWORD) {
       const ls = document.getElementById('loginScreen');
-      ls.style.transition = 'opacity 0.4s ease';
-      ls.style.opacity = '0';
-      setTimeout(() => {
-        ls.style.display = 'none';
-        showWelcome();
-      }, 400);
+      ls.style.transition = 'opacity 0.4s ease'; ls.style.opacity = '0';
+      setTimeout(() => { ls.style.display = 'none'; showWelcome(); }, 400);
     } else {
       const err = document.getElementById('loginErr');
       const box = document.querySelector('.login-box');
-      err.classList.add('show');
-      box.classList.add('shake');
+      err.classList.add('show'); box.classList.add('shake');
       setTimeout(() => box.classList.remove('shake'), 400);
       document.getElementById('pwInput').value = '';
     }
   }
 
-  /* ══════════════════════
-     WELCOME ANIMATION
-  ══════════════════════ */
   function showWelcome() {
     const ws = document.getElementById('welcomeScreen');
     ws.style.display = 'flex';
     let entered = false;
-
     ws.addEventListener('click', () => {
-      if (entered) return;
-      entered = true;
+      if (entered) return; entered = true;
       document.getElementById('wLeft').classList.add('split-left');
       document.getElementById('wRight').classList.add('split-right');
       setTimeout(() => {
         ws.style.opacity = '0';
-        setTimeout(() => {
-          ws.style.display = 'none';
-          document.getElementById('dashboard').classList.add('show');
-          startClock();
-        }, 500);
+        setTimeout(() => { ws.style.display = 'none'; document.getElementById('dashboard').classList.add('show'); startClock(); }, 500);
       }, 850);
     });
   }
 
   function startClock() {
     const el = document.getElementById('headerTime');
-    function tick() {
-      el.textContent = new Date().toLocaleTimeString('en-IN', { hour12: false });
-    }
-    tick();
-    setInterval(tick, 1000);
+    function tick() { el.textContent = new Date().toLocaleTimeString('en-IN', { hour12: false }); }
+    tick(); setInterval(tick, 1000);
   }
 
-  /* ══════════════════════
-     DROP ZONE
-  ══════════════════════ */
+  // DROP ZONE
   const dropZone = document.getElementById('dropZone');
-  const zipInput = document.getElementById('zipInput');
+  const fileInput = document.getElementById('fileInput');
 
   dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('over'); });
   dropZone.addEventListener('dragleave', () => dropZone.classList.remove('over'));
   dropZone.addEventListener('drop', e => {
-    e.preventDefault();
-    dropZone.classList.remove('over');
-    const f = e.dataTransfer.files[0];
-    if (f && f.name.endsWith('.zip')) loadZip(f);
-    else toast('⚠️ Please drop a .zip file');
+    e.preventDefault(); dropZone.classList.remove('over');
+    const files = Array.from(e.dataTransfer.files);
+    if (files.length) addFiles(files);
+    else toast('⚠️ No files detected');
   });
 
-  zipInput.addEventListener('change', () => {
-    if (zipInput.files[0]) loadZip(zipInput.files[0]);
-    zipInput.value = '';
+  fileInput.addEventListener('change', () => {
+    if (fileInput.files.length) addFiles(Array.from(fileInput.files));
+    fileInput.value = '';
   });
 
-  /* ══════════════════════
-     STATE
-  ══════════════════════ */
+  // STATE
   let allFiles = [];
   let sortKey = 'name';
   let sortDir = 1;
-  let zipCount = 0;
 
-  /* ══════════════════════
-     LOAD ZIP
-  ══════════════════════ */
-  async function loadZip(file) {
-    const pw = document.getElementById('progressWrap');
-    const pBar = document.getElementById('progBar');
-    const pPct = document.getElementById('progPct');
-    const pLabel = document.getElementById('progLabel');
-
-    pw.classList.add('show');
-    pLabel.textContent = `Reading ${file.name}…`;
-    pBar.style.width = '10%'; pPct.textContent = '10%';
-
-    try {
-      const zip = await JSZip.loadAsync(file, {
-        onprogress: (meta) => {
-          if (meta.percent) {
-            const p = Math.round(meta.percent);
-            pBar.style.width = p + '%';
-            pPct.textContent = p + '%';
-          }
-        }
-      });
-
-      pBar.style.width = '80%'; pPct.textContent = '80%';
-      pLabel.textContent = 'Extracting files…';
-
-      const entries = Object.values(zip.files).filter(f => !f.dir);
-      const newFiles = [];
-
-      for (const entry of entries) {
-        const blob = await entry.async('blob');
-        const nameParts = entry.name.split('/');
-        const fname = nameParts[nameParts.length - 1];
-        const ext = fname.includes('.') ? fname.split('.').pop().toLowerCase() : 'file';
-        newFiles.push({ name: fname, path: entry.name, ext, size: blob.size, blob, zipName: file.name });
+  function addFiles(files) {
+    let added = 0;
+    files.forEach(file => {
+      const nameParts = file.name.split('.');
+      const ext = nameParts.length > 1 ? nameParts.pop().toLowerCase() : 'file';
+      const name = file.name;
+      // avoid exact duplicates (same name + same size)
+      const isDupe = allFiles.some(f => f.name === name && f.size === file.size);
+      if (!isDupe) {
+        allFiles.push({ name, ext, size: file.size, file });
+        added++;
       }
-
-      allFiles = [...allFiles, ...newFiles];
-      zipCount++;
-
-      pBar.style.width = '100%'; pPct.textContent = '100%';
-      pLabel.textContent = `Done — ${newFiles.length} files loaded`;
-
-      setTimeout(() => pw.classList.remove('show'), 2000);
-
+    });
+    if (added > 0) {
+      document.getElementById('statLast').textContent = files[files.length - 1].name.length > 14
+        ? files[files.length - 1].name.substring(0, 13) + '…'
+        : files[files.length - 1].name;
       updateStats();
       renderTable();
-      toast(`✅ Loaded ${newFiles.length} files from ${file.name}`);
-
-    } catch (err) {
-      pw.classList.remove('show');
-      toast('❌ Failed to read ZIP: ' + err.message);
+      toast(`✅ Added ${added} file${added > 1 ? 's' : ''}`);
+    } else {
+      toast('⚠️ File(s) already in list');
     }
   }
 
-  /* ══════════════════════
-     STATS
-  ══════════════════════ */
   function updateStats() {
     document.getElementById('statFiles').textContent = allFiles.length;
     document.getElementById('statSize').textContent = fmtSize(allFiles.reduce((a, f) => a + f.size, 0));
-    const types = new Set(allFiles.map(f => f.ext));
-    document.getElementById('statTypes').textContent = types.size;
-    document.getElementById('statZips').textContent = zipCount;
+    document.getElementById('statTypes').textContent = new Set(allFiles.map(f => f.ext)).size;
   }
 
-  /* ══════════════════════
-     RENDER TABLE
-  ══════════════════════ */
-  function renderTable(list = null) {
-    const data = list || getFiltered();
+  function renderTable(list) {
+    const data = list !== undefined ? list : getFiltered();
     const tbody = document.getElementById('fileBody');
     const table = document.getElementById('fileTable');
     const empty = document.getElementById('emptyState');
 
-    if (data.length === 0) {
-      table.classList.remove('show');
-      empty.style.display = 'block';
-      return;
-    }
-    empty.style.display = 'none';
-    table.classList.add('show');
+    if (data.length === 0) { table.classList.remove('show'); empty.style.display = 'block'; return; }
+    empty.style.display = 'none'; table.classList.add('show');
 
     tbody.innerHTML = '';
     data.forEach((f, i) => {
+      const idx = allFiles.indexOf(f);
       const tr = document.createElement('tr');
       tr.style.animationDelay = Math.min(i * 30, 400) + 'ms';
-      const idx = allFiles.indexOf(f);
+      const badgeClass = ['zip','rar','gz','tar'].includes(f.ext) ? 'zip'
+        : ['jpg','jpeg','png','gif','webp','svg','bmp'].includes(f.ext) ? 'img'
+        : f.ext === 'pdf' ? 'pdf' : '';
       tr.innerHTML = `
         <td>
           <div class="file-name-cell">
             <div class="file-icon-badge">${fileEmoji(f.ext)}</div>
             <div>
               <div class="fname">${esc(f.name)}</div>
-              <div class="fpath">${esc(f.path)}</div>
+              <div class="fsize-inline">${fmtSize(f.size)}</div>
             </div>
           </div>
         </td>
-        <td><span class="badge">${esc(f.ext)}</span></td>
+        <td><span class="badge ${badgeClass}">${esc(f.ext)}</span></td>
         <td class="size-cell">${fmtSize(f.size)}</td>
         <td>
           <div class="action-btns">
-            ${canPreview(f) ? `<button class="dl-btn" onclick="previewFile(${idx})">👁 Preview</button>` : ''}
+            ${canPreview(f) ? `<button class="prev-btn" onclick="previewFile(${idx})">👁 Preview</button>` : ''}
             <button class="dl-btn" onclick="downloadFile(${idx})">⬇ Download</button>
             <button class="del-btn" onclick="deleteFile(${idx})">✕</button>
           </div>
@@ -587,7 +497,7 @@
 
   function getFiltered() {
     const q = document.getElementById('searchInput').value.toLowerCase();
-    let list = allFiles.filter(f => f.name.toLowerCase().includes(q) || f.path.toLowerCase().includes(q));
+    let list = allFiles.filter(f => f.name.toLowerCase().includes(q) || f.ext.toLowerCase().includes(q));
     list.sort((a, b) => {
       let av = a[sortKey], bv = b[sortKey];
       if (typeof av === 'string') { av = av.toLowerCase(); bv = bv.toLowerCase(); }
@@ -597,72 +507,66 @@
   }
 
   function filterFiles() { renderTable(); }
+  function sortBy(key) { if (sortKey === key) sortDir *= -1; else { sortKey = key; sortDir = 1; } renderTable(); }
 
-  function sortBy(key) {
-    if (sortKey === key) sortDir *= -1;
-    else { sortKey = key; sortDir = 1; }
-    renderTable();
-  }
-
-  /* ══════════════════════
-     ACTIONS
-  ══════════════════════ */
   function downloadFile(idx) {
     const f = allFiles[idx];
-    const url = URL.createObjectURL(f.blob);
+    const url = URL.createObjectURL(f.file);
     const a = document.createElement('a');
     a.href = url; a.download = f.name; a.click();
-    URL.revokeObjectURL(url);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
     toast(`⬇ Downloading ${f.name}`);
   }
 
   function downloadAll() {
     if (!allFiles.length) { toast('No files to download'); return; }
     allFiles.forEach(f => {
-      const url = URL.createObjectURL(f.blob);
+      const url = URL.createObjectURL(f.file);
       const a = document.createElement('a');
       a.href = url; a.download = f.name; a.click();
-      URL.revokeObjectURL(url);
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
     });
     toast(`⬇ Downloading all ${allFiles.length} files`);
   }
 
   function deleteFile(idx) {
-    const f = allFiles[idx];
+    const name = allFiles[idx].name;
     allFiles.splice(idx, 1);
-    updateStats();
-    renderTable();
-    toast(`🗑 Removed ${f.name}`);
+    updateStats(); renderTable();
+    if (!allFiles.length) document.getElementById('statLast').textContent = '—';
+    toast(`🗑 Removed ${name}`);
   }
 
   function clearAll() {
     if (!allFiles.length) return;
-    allFiles = []; zipCount = 0;
-    updateStats(); renderTable();
+    allFiles = []; updateStats(); renderTable();
+    document.getElementById('statLast').textContent = '—';
     toast('🗑 Cleared all files');
   }
 
-  /* ══════════════════════
-     PREVIEW
-  ══════════════════════ */
+  // PREVIEW
   const imgExts  = ['jpg','jpeg','png','gif','webp','svg','bmp','ico'];
   const textExts = ['txt','json','xml','csv','md','js','ts','html','css','py','java','c','cpp','h','sh','yaml','yml','log','ini','conf'];
 
-  function canPreview(f) { return imgExts.includes(f.ext) || textExts.includes(f.ext); }
+  function canPreview(f) { return imgExts.includes(f.ext) || textExts.includes(f.ext) || f.ext === 'pdf'; }
 
   function previewFile(idx) {
     const f = allFiles[idx];
     document.getElementById('modalTitle').textContent = f.name;
-    const img = document.getElementById('previewImg');
-    const txt = document.getElementById('previewText');
-    const fb  = document.getElementById('previewFallback');
-    img.style.display = 'none'; txt.style.display = 'none'; fb.style.display = 'none';
+    const img  = document.getElementById('previewImg');
+    const txt  = document.getElementById('previewText');
+    const pdf  = document.getElementById('previewPdf');
+    const fb   = document.getElementById('previewFallback');
+    [img, txt, pdf, fb].forEach(el => el.style.display = 'none');
+
+    const url = URL.createObjectURL(f.file);
 
     if (imgExts.includes(f.ext)) {
-      img.src = URL.createObjectURL(f.blob);
-      img.style.display = 'block';
+      img.src = url; img.style.display = 'block';
+    } else if (f.ext === 'pdf') {
+      pdf.src = url; pdf.style.display = 'block';
     } else if (textExts.includes(f.ext)) {
-      f.blob.text().then(content => { txt.textContent = content; txt.style.display = 'block'; });
+      f.file.text().then(content => { txt.textContent = content; txt.style.display = 'block'; });
     } else {
       fb.style.display = 'block';
     }
@@ -671,17 +575,16 @@
 
   function closePreview() {
     document.getElementById('previewModal').classList.remove('show');
-    document.getElementById('previewImg').src = '';
+    const img = document.getElementById('previewImg');
+    const pdf = document.getElementById('previewPdf');
+    if (img.src) { URL.revokeObjectURL(img.src); img.src = ''; }
+    if (pdf.src) { URL.revokeObjectURL(pdf.src); pdf.src = ''; }
     document.getElementById('previewText').textContent = '';
   }
 
-  document.getElementById('previewModal').addEventListener('click', function(e) {
-    if (e.target === this) closePreview();
-  });
+  document.getElementById('previewModal').addEventListener('click', function(e) { if (e.target === this) closePreview(); });
 
-  /* ══════════════════════
-     HELPERS
-  ══════════════════════ */
+  // HELPERS
   function fmtSize(b) {
     if (b < 1024) return b + ' B';
     if (b < 1048576) return (b / 1024).toFixed(1) + ' KB';
@@ -689,18 +592,17 @@
     return (b / 1073741824).toFixed(2) + ' GB';
   }
 
-  function esc(s) {
-    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  }
+  function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
   function fileEmoji(ext) {
     const map = {
-      jpg:'🖼️', jpeg:'🖼️', png:'🖼️', gif:'🎞️', svg:'🎨', webp:'🖼️',
-      pdf:'📕', doc:'📘', docx:'📘', xls:'📗', xlsx:'📗', ppt:'📙', pptx:'📙',
-      txt:'📝', md:'📝', json:'🔧', xml:'🔧', csv:'📊',
-      js:'📜', ts:'📜', html:'🌐', css:'🎨', py:'🐍', java:'☕', sh:'⚙️',
-      zip:'🗜️', rar:'🗜️', tar:'🗜️', gz:'🗜️',
-      mp4:'🎬', mp3:'🎵', wav:'🎵', avi:'🎬', mov:'🎬',
+      jpg:'🖼️',jpeg:'🖼️',png:'🖼️',gif:'🎞️',svg:'🎨',webp:'🖼️',bmp:'🖼️',ico:'🖼️',
+      pdf:'📕',doc:'📘',docx:'📘',xls:'📗',xlsx:'📗',ppt:'📙',pptx:'📙',
+      txt:'📝',md:'📝',json:'🔧',xml:'🔧',csv:'📊',
+      js:'📜',ts:'📜',html:'🌐',css:'🎨',py:'🐍',java:'☕',sh:'⚙️',c:'📜',cpp:'📜',
+      zip:'🗜️',rar:'🗜️',tar:'🗜️',gz:'🗜️',
+      mp4:'🎬',mp3:'🎵',wav:'🎵',avi:'🎬',mov:'🎬',mkv:'🎬',
+      ttf:'🔤',woff:'🔤',woff2:'🔤',
     };
     return map[ext] || '📄';
   }
@@ -708,8 +610,7 @@
   let toastTimer;
   function toast(msg) {
     const el = document.getElementById('toast');
-    el.textContent = msg;
-    el.classList.add('show');
+    el.textContent = msg; el.classList.add('show');
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => el.classList.remove('show'), 3000);
   }
